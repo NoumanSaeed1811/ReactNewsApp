@@ -218,6 +218,9 @@ export class News extends Component {
                                 desc={element.description ? element.description.slice(0, 88) : ""}
                                 imageUrl={element.urlToImage ? element.urlToImage : "https://s.yimg.com/ny/api/res/1.2/S36LOCNUfaPy27g9c7r4_w--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02NzU7Y2Y9d2VicA--/https://s.yimg.com/os/creatr-uploaded-images/2025-08/8dba44b0-835c-11f0-bfd7-105b09990dac"}
                                 newsUrl={element.url}
+                                author = {element.author}
+                                date = {element.publishedAt}
+                                source = {element.source.name}
                             />
                         </div>
                     })}
