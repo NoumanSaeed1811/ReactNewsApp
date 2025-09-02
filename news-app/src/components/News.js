@@ -166,6 +166,7 @@ export class News extends Component {
 
     }
     async updateNews() {
+        this.props.setProgress(0)
         let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=b1569f755d4642358dd8e587065fab7f&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({ loading: true })
         let data = await fetch(url);
@@ -178,25 +179,12 @@ export class News extends Component {
                 loading: false
             }
         )
+        this.props.setProgress(100)
 
     }
     async componentDidMount() {
         this.updateNews()
     }
-    // handleNextClick = async () => {
-    //     this.setState({
-    //         page: this.state.page + 1
-    //     });
-    //     this.updateNews()
-    // }
-
-    // handlePreviousClick = async () => {
-    //     this.setState({
-    //         page: this.state.page - 1
-    //     });
-    //     this.updateNews()
-
-    // }
     fetchMoreData = async () => {
         let nextPage = this.state.page+1
         let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=b1569f755d4642358dd8e587065fab7f&page=${this.state.page}&pageSize=${this.props.pageSize}`;
