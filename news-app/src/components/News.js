@@ -138,7 +138,6 @@ export class News extends Component {
     ]
 
     static defaultProps = {
-        country : "us",
         pageSize : 10,
         category : "general",
 
@@ -160,8 +159,8 @@ export class News extends Component {
         }
 
     }
-    async componentDidMount() {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=b1569f755d4642358dd8e587065fab7f&page=1&pageSize=${this.props.pageSize}`;
+    async updateNews(){
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=b1569f755d4642358dd8e587065fab7f&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({ loading: true })
         let data = await fetch(url);
         let parsedData = await data.json();
@@ -173,43 +172,31 @@ export class News extends Component {
                 loading: false
             }
         )
+
+    }
+    async componentDidMount() {
+       this.updateNews()
     }
     handleNextClick = async () => {
-        if (!(this.state.page + 1 > (this.state.totalResults / this.props.pageSize))) {
-            let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=b1569f755d4642358dd8e587065fab7f&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-            this.setState({ loading: true })
-            let data = await fetch(url);
-            let parsedData = await data.json();
-            this.setState(
-                {
-                    articles: parsedData.articles,
-                    page: this.state.page + 1,
-                    loading: false
-                }
-            )
-        }
+        this.setState({
+            page:this.state.page+1
+        });
+        this.updateNews()
     }
 
     handlePreviousClick = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=b1569f755d4642358dd8e587065fab7f&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-        this.setState({ loading: true })
-        let data = await fetch(url);
-        let parsedData = await data.json();
-        this.setState(
-            {
-                articles: parsedData.articles,
-                page: this.state.page - 1,
-                loading: false
-            }
-        )
+        this.setState({
+            page : this.state.page -1
+        });
+        this.updateNews()
 
     }
 
     render() {
         return (
             <div className="container">
-                {this.state.loading && <Spinner />}
                 <h2>News HeadLines</h2>
+                {this.state.loading && <Spinner />}
                 <div className="row">
                     {!this.state.loading && this.state.articles.map((element) => {
                         return <div className="col-sm-3 mx-2" key={element.url}>
